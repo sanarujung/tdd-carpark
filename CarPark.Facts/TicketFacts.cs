@@ -126,7 +126,7 @@ namespace CarPark.Facts
             //    t.DateOut = DateTime.Parse("14:00");
 
             //    //act
-            //    decimal fee = t.ParkingFee;
+            //    var fee = t.ParkingFee;
 
             //    //assert 
             //    Assert.Equal(140m, fee);
