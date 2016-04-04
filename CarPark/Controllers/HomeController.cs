@@ -13,17 +13,13 @@ namespace CarPark.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult CheckIn()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult CheckOut()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
