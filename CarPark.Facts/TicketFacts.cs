@@ -20,7 +20,7 @@ namespace CarPark.Facts
 
                 Ticket t = new Ticket();
                 t.PlateNo = "1707";
-                t.DateIn = new DateTime(2016,1,1,9,0,0); // 9am
+                t.DateIn = new DateTime(2016, 1, 1, 9, 0, 0); // 9am
                 t.DateOut = DateTime.Parse("13:30"); // 1:30 pm
 
                 // act
@@ -51,7 +51,7 @@ namespace CarPark.Facts
                 t.DateOut = null;
 
                 Assert.Null(t.ParkingFee);
-                    
+
             }
 
 
@@ -67,7 +67,7 @@ namespace CarPark.Facts
                 var fee = t.ParkingFee;
 
                 //assert 
-                Assert.Equal(0m,fee);
+                Assert.Equal(0m, fee);
             }
 
             [Fact]
@@ -117,20 +117,20 @@ namespace CarPark.Facts
                 Assert.Equal(80m, fee);
             }
 
-            //[Fact]
-            //public void For6Hours_140Bath()
-            //{
-            //    //arrange
-            //    var t = new Ticket();
-            //    t.DateIn = DateTime.Parse("9:00");
-            //    t.DateOut = DateTime.Parse("14:00");
+            [Fact(Skip = "bug")]
+            public void For6Hours_140Bath()
+            {
+                //arrange
+                var t = new Ticket();
+                t.DateIn = DateTime.Parse("9:00");
+                t.DateOut = DateTime.Parse("10:00");
 
-            //    //act
-            //    var fee = t.ParkingFee;
+                //act
+                var fee = t.ParkingFee;
 
-            //    //assert 
-            //    Assert.Equal(140m, fee);
-            //}
+                //assert 
+                Assert.Equal(140m, fee);
+            }
 
             [Fact]
             public void For6HoursExceed15Minutes_GetExtraHour()
@@ -162,6 +162,23 @@ namespace CarPark.Facts
                 });
 
                 Assert.Equal("Invalid date", ex.Message);
+            }
+
+            [Theory]
+            [InlineData("9:00","15:00",140)]
+            [InlineData("9:00","16:00",170)]
+            [InlineData("9:00","17:00",200)]
+            [InlineData("9:00","18:00",230)]
+            [InlineData("9:00","19:00", 260)]
+            public void SamplingTests(string dateIn, string dateOut, decimal expectedFee)
+            {
+                var t = new Ticket();
+                t.DateIn = DateTime.Parse(dateIn);
+                t.DateOut = DateTime.Parse(dateOut);
+
+                var fee = t.ParkingFee;
+
+                Assert.Equal(expectedFee, fee);
             }
         }
 
