@@ -11,19 +11,22 @@ namespace CarPark.Models
         public DateTime DateIn { get; set; }
         public DateTime? DateOut { get; set; }
         public string PlateNo { get; set; }
-        public decimal ParkingFee {
+        public decimal? ParkingFee {
             get
             {
                 if (DateOut == null)
-                    return 0;
-                TimeSpan TimeFee = (DateTime)DateOut - DateIn;
+                    return null;
+                if (DateOut < DateIn)
+                    throw new Exception("Invalid date");
+
+                TimeSpan TimeFee = DateOut.Value - DateIn;
                 TimeFee = TimeFee.Add(TimeSpan.FromMinutes(-15));
                 if (TimeFee.TotalMinutes <= 0)
-                    return 0;
+                    return 0m;
                 else if (TimeFee.TotalHours <= 3.0)
-                    return 50;
+                    return 50m;
                 else
-                    return 50 + ((decimal)Math.Ceiling(TimeFee.TotalHours - 3) * 30);
+                    return 50m + ((decimal)Math.Ceiling(TimeFee.TotalHours - 3) * 30m);
             }
         }
 
